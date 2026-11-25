@@ -1,0 +1,28 @@
+{
+  "name": "universal-style-button",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "One document, one switch, every era of interface style — web and native from one engine",
+  "scripts": {
+    "test": "node --test src/engine/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "gen:web": "tsc -p tsconfig.web.json",
+    "dev": "expo start",
+    "dev:web": "npm run gen:web && python3 -m http.server 4173 --directory web",
+    "dev:ios": "expo start --ios",
+    "dev:android": "expo start --android",
+    "check": "npm run typecheck && npm test && npm run gen:web"
+  },
+  "dependencies": {
+    "expo": "~58.0.26",
+    "expo-status-bar": "~58.0.5",
+    "react": "19.3.0",
+    "react-native": "0.88.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "~19.3.0",
+    "typescript": "~5.9.3"
+  }
+}

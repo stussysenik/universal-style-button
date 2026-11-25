@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "web/engine",
+    "rewriteRelativeImportExtensions": true,
+    "declaration": false,
+    "sourceMap": false
+  },
+  "include": [
+    "src/engine/types.ts",
+    "src/engine/skins.ts",
+    "src/engine/algorithm.ts",
+    "src/engine/selection.ts"
+  ]
+}

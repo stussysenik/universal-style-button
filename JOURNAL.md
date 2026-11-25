@@ -41,3 +41,18 @@ cycle, so the "visual algorithm" is data-driven. Cursor is web-only; native show
 glyph swatch instead of pretending a cursor exists. Recorded in `design.md`.
 
 Next gate: owner review of the mock before production code is written.
+
+## 2026-11-25 — universal-style-button, shared engine
+
+Built the platform-agnostic engine in `src/engine/`: 20 era skins from Swiss Grid
+(1957) to Bento (2024), eight gated axes, a contrast-distance algorithm that ranks
+every candidate by weighted distance across enabled axes, and a selection state that
+freezes disabled slices. No `any`, no `as`, no non-exhaustive switches. Web consumes
+TypeScript-emitted ES modules in `web/engine/`; native imports the same source.
+
+`npm run check` green: strict `tsc --noEmit`, 14/14 `node:test` tests, emit clean.
+Invariants pinned by tests: unique ids and valid hex tokens, distance bounded and
+symmetric, next skin never repeats current, chosen candidate is the top-ranked one,
+disabled slices survive advances, encode/decode round trip.
+
+First commit `c047201` pushed and read back with `git ls-remote`.
