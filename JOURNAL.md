@@ -56,3 +56,20 @@ symmetric, next skin never repeats current, chosen candidate is the top-ranked o
 disabled slices survive advances, encode/decode round trip.
 
 First commit `c047201` pushed and read back with `git ls-remote`.
+
+## 2026-11-25 — universal-style-button, web surface
+
+Built `web/` as the public showcase: one document, 20 selectable eras, a three-beat
+REMIX / RE-THINK / RE:IMAGINE rebuild, eight gated axes with frozen slices, a visible
+ranked algorithm panel with weights, custom SVG cursors per era, and shareable
+`#skin/axes` URLs. Styles are driven by CSS custom properties and data attributes
+set from the resolved skin — no per-skin markup or per-skin stylesheet.
+
+Verified in Chrome on the real served page at 1440x900: notion white/sans/full,
+geocities `rgb(255,255,204)`/comic/boxed, web2k `rgb(238,243,249)`/card, terminal
+`rgb(0,0,0)`/mono/log, vaporwave `rgb(18,4,58)`/display/center, bento
+`rgb(244,244,245)`/bento grid. Turning Color off froze white across a jump to
+terminal while type still changed; re-enabling and clicking advanced to memphis.
+0 console errors. Shots: `shot-web-notion.png`, `shot-web-geocities.png`,
+`shot-web-web2k.png`, `shot-web-terminal.png`, `shot-web-vaporwave.png`,
+`shot-web-bento.png`, `shot-web-transition.png`.

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-font="sans" data-tile="none" data-frame="none" data-layout="full" data-hero="plain" data-button="solid" data-cursor="arrow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="One document. One switch. Twenty eras of interface style, web and native from a single engine.">
+<title>Universal Style Button</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="rail" aria-label="Era catalogue">
+    <div class="rail-head">
+      <span class="mark">U</span>
+      <div>
+        <div class="rail-title">Style button</div>
+        <div class="rail-sub">20 eras · 1957—2024</div>
+      </div>
+    </div>
+    <div class="rail-label">Catalogue</div>
+    <nav class="catalogue" id="catalogue" aria-label="Styles"></nav>
+    <div class="rail-foot">One document<br>No duplicated markup</div>
+  </aside>
+
+  <div class="stage">
+    <header class="bar">
+      <div class="crumb" id="crumb">Private / Design tokens, one state away</div>
+      <div class="controls">
+        <span class="state">skin <b id="skin-name">notion</b> <span class="dim" id="skin-era">2021</span></span>
+        <button class="quiet" id="settings-toggle" type="button" aria-expanded="false" aria-controls="panel">Settings</button>
+        <button class="style-button" id="style-button" type="button" aria-label="Switch style">
+          <span class="swap" aria-hidden="true">⇄</span> Switch style
+        </button>
+      </div>
+    </header>
+
+    <div class="body-row">
+      <main class="doc" id="doc">
+        <article class="page" id="page">
+          <div class="eyebrow"><span id="decor-prefix"></span> Fieldnotes / Experiment 04</div>
+          <h1 class="hero" id="hero"><span>REMIX</span><span>RE-THINK</span><span>RE:IMAGINE</span></h1>
+          <h1 class="title">Design tokens, one state away</h1>
+          <div class="updated">Updated today · <span id="note">Neutral paper. The tool disappears behind the work.</span></div>
+
+          <p>Everything on this page is drawn from one value. Change the value and the page changes with it — the sidebar, the type, the spacing, the corners, the button that did it.</p>
+
+          <div class="callout"><strong>One state decides every surface.</strong> The content never moves. Only the system around it does.</div>
+
+          <h2>What changes</h2>
+          <ul class="check">
+            <li><span class="tick">✓</span> Color and contrast</li>
+            <li><span class="tick">✓</span> Type family and scale</li>
+            <li><span class="tick">✓</span> Spacing and density</li>
+            <li><span class="tick">✓</span> Radius and shadow</li>
+            <li><span class="tick">✓</span> Motion, structure, cursor</li>
+          </ul>
+
+          <div class="quote">The interface is a pure function of one value.</div>
+
+          <h2>Live tokens</h2>
+          <table class="table">
+            <thead><tr><th>Token</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>skin</td><td id="tok-skin">notion</td></tr>
+              <tr><td>type</td><td id="tok-font">sans</td></tr>
+              <tr><td>density</td><td id="tok-pad">16px</td></tr>
+              <tr><td>radius</td><td id="tok-radius">3px</td></tr>
+              <tr><td>duration</td><td id="tok-motion">180ms</td></tr>
+            </tbody>
+          </table>
+
+          <div class="foot">Twenty eras, one document, no duplicated markup</div>
+        </article>
+      </main>
+
+      <aside class="panel" id="panel" aria-label="Style controls">
+        <section class="panel-section">
+          <h3>Change these aspects</h3>
+          <p class="panel-hint">Anything switched off freezes at its current value.</p>
+          <div class="axes" id="axes"></div>
+          <div class="panel-actions">
+            <button class="mini" id="all-on" type="button">All on</button>
+            <button class="mini" id="all-off" type="button">All off</button>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <h3>Visual algorithm</h3>
+          <p class="panel-hint">Next era = the largest weighted distance across the axes you left on.</p>
+          <div class="rank-list" id="rank-list"></div>
+          <div class="formula" id="formula"></div>
+        </section>
+
+        <section class="panel-section">
+          <h3>State</h3>
+          <div class="state-row"><span>selection</span><code id="selection-code">notion/color.type.space.radius.motion.shadow.decor.cursor</code></div>
+          <button class="mini wide" id="copy-link" type="button">Copy share link</button>
+        </section>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="phase" id="phase" aria-hidden="true">
+  <div class="phase-word"><span id="beat-1">REMIX</span><span id="beat-2">RE-THINK</span><span id="beat-3">RE:IMAGINE</span></div>
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
