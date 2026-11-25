@@ -5,7 +5,7 @@ export function allAxes() {
     return new Set(AXES);
 }
 export function createSelection(base) {
-    return { base, enabled: allAxes(), frozen: {} };
+    return { base, enabled: allAxes(), frozen: {}, recent: [base] };
 }
 export function resolve(selection) {
     const base = getSkin(selection.base);
@@ -52,10 +52,11 @@ export function toggleAxis(selection, axis) {
     return { ...selection, enabled, frozen };
 }
 export function advance(selection) {
-    return { ...selection, base: chooseNext(selection.base, selection.enabled) };
+    const base = chooseNext(selection.base, selection.enabled, selection.recent);
+    return { ...selection, base, recent: [...selection.recent, base].slice(-5) };
 }
 export function jump(selection, base) {
-    return { ...selection, base };
+    return { ...selection, base, recent: [...selection.recent, base].slice(-5) };
 }
 export function encodeSelection(selection) {
     const axes = AXES.filter((axis) => selection.enabled.has(axis)).join(".");
@@ -75,5 +76,5 @@ export function decodeSelection(value) {
             enabled.add(axis);
         }
     }
-    return { base: baseSkin.id, enabled, frozen: {} };
+    return { base: baseSkin.id, enabled, frozen: {}, recent: [baseSkin.id] };
 }

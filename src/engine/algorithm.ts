@@ -176,15 +176,25 @@ export function contrast(
   return { score: weight === 0 ? 0 : total / weight, reasons };
 }
 
+const RECENCY_PENALTY = 0.12;
+
 export function rankCandidates(
   current: SkinId,
   enabled: ReadonlySet<Axis>,
+  recent: ReadonlyArray<SkinId> = [],
 ): ReadonlyArray<Ranked> {
   const from = getSkin(current);
   return SKINS.filter((skin) => skin.id !== current)
     .map((skin) => {
       const { score, reasons } = contrast(from, skin, enabled);
-      return { id: skin.id, score, reasons, order: SKINS.indexOf(skin) };
+      const seenAt = recent.indexOf(skin.id);
+      const penalty = seenAt === -1 ? 0 : (recent.length - seenAt) * RECENCY_PENALTY;
+      return {
+        id: skin.id,
+        score: Math.max(0, score - penalty),
+        reasons,
+        order: SKINS.indexOf(skin),
+      };
     })
     .sort((a, b) => b.score - a.score || a.order - b.order)
     .map(({ id, score, reasons }) => ({ id, score, reasons }));
@@ -193,8 +203,9 @@ export function rankCandidates(
 export function chooseNext(
   current: SkinId,
   enabled: ReadonlySet<Axis>,
+  recent: ReadonlyArray<SkinId> = [],
 ): SkinId {
-  const ranked = rankCandidates(current, enabled);
+  const ranked = rankCandidates(current, enabled, recent);
   const first = ranked[0];
   if (first === undefined) return current;
   return first.id;

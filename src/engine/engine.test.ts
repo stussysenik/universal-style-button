@@ -123,6 +123,22 @@ test("re-enabling an axis drops its frozen slice", () => {
   assert.deepEqual(resolve(on).radius, getSkin("notion").radius);
 });
 
+test("twelve advances travel across most of the catalogue", () => {
+  let state = createSelection("notion");
+  const seen = new Set([state.base]);
+  for (let i = 0; i < 12; i += 1) {
+    state = advance(state);
+    seen.add(state.base);
+  }
+  assert.ok(seen.size >= 6, `visited only ${seen.size} eras`);
+});
+
+test("recent skins are penalised in the ranking", () => {
+  const plain = rankCandidates("notion", allAxes());
+  const penalised = rankCandidates("notion", allAxes(), [plain[0]?.id ?? "pixel"]);
+  assert.notEqual(penalised[0]?.id, plain[0]?.id);
+});
+
 test("jump changes the base without touching frozen slices", () => {
   const off = toggleAxis(createSelection("notion"), "space");
   const before = resolve(off).space;

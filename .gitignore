@@ -1,5 +1,8 @@
 node_modules/
 .expo/
+.flowdeck/
 dist/
+ios/
+android/
 .DS_Store
 *.log

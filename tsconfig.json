@@ -3,7 +3,10 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "jsx": "react-jsx",
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -11,7 +14,16 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*.ts", "scripts/**/*.ts", "App.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "scripts/**/*.ts",
+    "App.tsx",
+    "index.ts"
+  ],
+  "extends": "expo/tsconfig.base"
 }

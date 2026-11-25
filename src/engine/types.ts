@@ -155,6 +155,7 @@ export interface Selection {
   base: SkinId;
   enabled: ReadonlySet<Axis>;
   frozen: Frozen;
+  recent: ReadonlyArray<SkinId>;
 }
 
 export interface Ranked {

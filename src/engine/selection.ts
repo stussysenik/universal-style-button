@@ -7,7 +7,7 @@ export function allAxes(): ReadonlySet<Axis> {
 }
 
 export function createSelection(base: SkinId): Selection {
-  return { base, enabled: allAxes(), frozen: {} };
+  return { base, enabled: allAxes(), frozen: {}, recent: [base] };
 }
 
 export function resolve(selection: Selection): Skin {
@@ -57,11 +57,12 @@ export function toggleAxis(selection: Selection, axis: Axis): Selection {
 }
 
 export function advance(selection: Selection): Selection {
-  return { ...selection, base: chooseNext(selection.base, selection.enabled) };
+  const base = chooseNext(selection.base, selection.enabled, selection.recent);
+  return { ...selection, base, recent: [...selection.recent, base].slice(-5) };
 }
 
 export function jump(selection: Selection, base: SkinId): Selection {
-  return { ...selection, base };
+  return { ...selection, base, recent: [...selection.recent, base].slice(-5) };
 }
 
 export function encodeSelection(selection: Selection): string {
@@ -82,5 +83,5 @@ export function decodeSelection(value: string): Selection | null {
       enabled.add(axis);
     }
   }
-  return { base: baseSkin.id, enabled, frozen: {} };
+  return { base: baseSkin.id, enabled, frozen: {}, recent: [baseSkin.id] };
 }

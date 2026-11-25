@@ -55,8 +55,11 @@ rather than faked; the native surface shows a cursor glyph as a swatch.
 ## Visual algorithm
 
 Order is not a fixed cycle. Each click picks the candidate with the largest weighted
-distance across the enabled axes, so consecutive skins maximise contrast. Weights
-are data, not code; changing a weight changes the path through the catalogue.
+distance across the enabled axes, minus a recency penalty over the last five skins.
+Without that penalty the path collapsed into a two-skin oscillation (pixel ↔ memphis)
+because maximal contrast is mutual; simulator testing found it and a test now pins a
+twelve-step walk through at least six eras. Weights are data, not code; changing a
+weight changes the path through the catalogue.
 
 ## Gate
 

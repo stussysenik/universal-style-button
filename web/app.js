@@ -158,7 +158,7 @@ function renderAxes() {
 function renderRank() {
   const host = document.getElementById("rank-list");
   host.replaceChildren();
-  const ranked = rankCandidates(selection.base, selection.enabled).slice(0, 5);
+  const ranked = rankCandidates(selection.base, selection.enabled, selection.recent).slice(0, 5);
   ranked.forEach((entry, index) => {
     const skin = SKINS.find((candidate) => candidate.id === entry.id);
     if (skin === undefined) return;
@@ -191,7 +191,7 @@ function renderRank() {
     driver === undefined
       ? "no axes enabled"
       : `${AXIS_LABEL[driver.axis]} (w=${AXIS_WEIGHT[driver.axis]})`;
-  formula.textContent = `Next: ${top.id} — led by ${driverText}. max Σ w × distance`;
+  formula.textContent = `Next: ${top.id} — led by ${driverText}. max Σ w × distance − recency`;
 }
 
 function renderState() {

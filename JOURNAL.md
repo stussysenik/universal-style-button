@@ -73,3 +73,25 @@ terminal while type still changed; re-enabling and clicking advanced to memphis.
 0 console errors. Shots: `shot-web-notion.png`, `shot-web-geocities.png`,
 `shot-web-web2k.png`, `shot-web-terminal.png`, `shot-web-vaporwave.png`,
 `shot-web-bento.png`, `shot-web-transition.png`.
+
+## 2026-11-25 — universal-style-button, native surface and algorithm fix
+
+Added the Expo surface: `App.tsx`, `index.ts`, `app.json`, `src/native/StyleApp.tsx`
+and `src/native/fonts.ts`. It imports the same engine as web. Seven axes appear on
+native; cursor is omitted and shown as a glyph swatch because a phone has no cursor.
+Texture is a glyph strip, not a fake CSS background. `expo-dev-client` was installed
+after a plain debug build reported "No script URL provided" in the simulator; the
+dev-server URL is now entered through its launcher.
+
+Verified on a booted iPhone 16 / iOS 18.6 simulator through FlowDeck: build
+succeeded, app launched, all 20 era buttons and the document rendered. Ten taps of
+the switch walked notion → pixel → memphis → amber → neumorph → brutalist → glass →
+swiss → skeuo → pixel; opening Settings and switching Color off changed the next
+candidate from swiss to pixel, so the setting drives the algorithm. Native shots:
+`shot-native-notion.png`, `shot-native-amber.png`, `shot-native-glass.png`,
+`shot-native-settings.png`. Metro bundles for both ios and android succeed.
+
+Defect found in the simulator and fixed: pure max-distance ranking oscillates
+between two mutually distant skins. `Selection` now carries `recent` (last five),
+and `rankCandidates` subtracts a recency penalty. Two new tests pin traversal and
+penalty; `npm run check` green at 16/16 tests and strict `tsc`.
