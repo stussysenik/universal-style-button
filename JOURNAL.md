@@ -95,3 +95,16 @@ Defect found in the simulator and fixed: pure max-distance ranking oscillates
 between two mutually distant skins. `Selection` now carries `recent` (last five),
 and `rankCandidates` subtracts a recency penalty. Two new tests pin traversal and
 penalty; `npm run check` green at 16/16 tests and strict `tsc`.
+
+## 2026-11-25 — universal-style-button, public launch
+
+Added `README.md` with the run table and `.github/workflows/deploy-web.yml`. Created
+the public GitHub repo with `gh repo create`, configured Pages with
+`build_type=workflow`, and pushed four commits: `c047201`, `61a7db6`, `c7f39d4`,
+`2466906`. Every push was read back with `git ls-remote origin refs/heads/main`.
+
+Workflow run `45665414475` finished green: `npm ci`, `npm run check`, artifact upload
+and Pages deploy all passed. Public smoke test:
+`https://stussysenik.github.io/universal-style-button/` returns HTTP 200 with
+`<title>Universal Style Button</title>`, and `/engine/skins.js` returns HTTP 200.
+Node 20 runner deprecation annotations are upstream action notices, not failures.
