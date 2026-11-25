@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en" data-skin="notion">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Universal style button — mock</title>
+<style>
+  :root, html[data-skin="notion"] {
+    --bg: #ffffff;
+    --rail: #fbfbfa;
+    --panel: #f7f7f5;
+    --ink: #37352f;
+    --muted: #787774;
+    --line: #e9e9e7;
+    --accent: #2383e2;
+    --accent-ink: #ffffff;
+    --soft: #f1f5fb;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --body-size: 15px;
+    --lh: 1.65;
+    --pad: 16px;
+    --gap: 8px;
+    --radius: 3px;
+    --shadow: 0 1px 2px rgba(15,15,15,.06);
+    --ease: 180ms ease;
+    --hero-font: var(--font);
+    --hero-size: 52px;
+    --hero-weight: 650;
+    --hero-track: -0.035em;
+    --hero-color: var(--ink);
+    --tile: none;
+    --tile-size: 16px 16px;
+  }
+
+  html[data-skin="geocities"] {
+    --bg: #ffffcc;
+    --rail: #c0c0c0;
+    --panel: #ffffff;
+    --ink: #000000;
+    --muted: #333399;
+    --line: #0000ee;
+    --accent: #0000ee;
+    --accent-ink: #ffff00;
+    --soft: #ffffff;
+    --font: "Times New Roman", Times, serif;
+    --body-size: 15px;
+    --lh: 1.45;
+    --pad: 7px;
+    --gap: 4px;
+    --radius: 0px;
+    --shadow: 2px 2px 0 #0000ee;
+    --ease: 60ms steps(2, end);
+    --hero-font: "Comic Sans MS", "Comic Sans", cursive;
+    --hero-size: 46px;
+    --hero-weight: 700;
+    --hero-track: 0.01em;
+    --hero-color: #0000ee;
+    --tile: radial-gradient(#0000ee 1px, transparent 1px);
+    --tile-size: 16px 16px;
+  }
+
+  html[data-skin="web2k"] {
+    --bg: #eef3f9;
+    --rail: #dfe7f1;
+    --panel: #ffffff;
+    --ink: #26384d;
+    --muted: #6d8299;
+    --line: #cbd7e4;
+    --accent: #1a5fb4;
+    --accent-ink: #ffffff;
+    --soft: #f7faff;
+    --font: Verdana, Geneva, Tahoma, sans-serif;
+    --body-size: 12px;
+    --lh: 1.65;
+    --pad: 14px;
+    --gap: 10px;
+    --radius: 12px;
+    --shadow: 0 2px 6px rgba(26,95,180,.18);
+    --ease: 200ms ease;
+    --hero-font: Verdana, Geneva, Tahoma, sans-serif;
+    --hero-size: 44px;
+    --hero-weight: 700;
+    --hero-track: -0.02em;
+    --hero-color: #2b7de9;
+    --tile: none;
+    --tile-size: auto;
+  }
+
+  html[data-skin="terminal"] {
+    --bg: #000000;
+    --rail: #010503;
+    --panel: #04120a;
+    --ink: #33ff66;
+    --muted: #1d9c45;
+    --line: #0d3d1d;
+    --accent: #33ff66;
+    --accent-ink: #000000;
+    --soft: #04120a;
+    --font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --body-size: 13px;
+    --lh: 1.55;
+    --pad: 6px;
+    --gap: 3px;
+    --radius: 0px;
+    --shadow: none;
+    --ease: 80ms linear;
+    --hero-font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --hero-size: 48px;
+    --hero-weight: 700;
+    --hero-track: 0.04em;
+    --hero-color: #33ff66;
+    --tile: repeating-linear-gradient(0deg, rgba(51,255,102,.055) 0 1px, transparent 1px 4px);
+    --tile-size: auto;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image: var(--tile);
+    background-size: var(--tile-size);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: var(--body-size);
+    line-height: var(--lh);
+    transition: background-color var(--ease), color var(--ease);
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; }
+
+  .app { display: flex; min-height: 100vh; position: relative; }
+  html.swap-out .app { animation: swapOut 170ms cubic-bezier(.6,0,.9,.2) both; }
+  html.swap-in .app { animation: swapIn 250ms cubic-bezier(.1,.8,.2,1) both; }
+  @keyframes swapOut {
+    to { opacity: 0; transform: translateY(-12px); filter: blur(9px); clip-path: inset(0 0 100% 0); }
+  }
+  @keyframes swapIn {
+    from { opacity: 0; transform: translateY(14px); filter: blur(9px); clip-path: inset(100% 0 0 0); }
+    to { opacity: 1; transform: none; filter: none; clip-path: inset(0 0 0 0); }
+  }
+
+  .phase {
+    position: fixed; inset: 0; z-index: 50;
+    pointer-events: none; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 100ms linear;
+  }
+  .phase.on { opacity: 1; }
+  .phase-word {
+    display: grid; place-items: center;
+    padding: 18px 34px;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  }
+  .phase-word span {
+    grid-area: 1 / 1;
+    font-family: var(--hero-font);
+    font-size: clamp(40px, 7vw, 92px);
+    font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    color: var(--accent); opacity: 0; transform: translateY(14px) scale(.96);
+    filter: blur(7px); white-space: nowrap;
+    text-shadow: 0 2px 24px rgba(0,0,0,.18);
+  }
+  .phase-word span.beat { animation: beat 190ms cubic-bezier(.1,.8,.2,1) both; }
+  @keyframes beat {
+    0% { opacity: 0; transform: translateY(14px) scale(.96); filter: blur(7px); }
+    35% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    75% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: translateY(-10px) scale(1.02); filter: blur(4px); }
+  }
+
+  .rail {
+    width: 216px; flex: 0 0 216px;
+    background: var(--rail); border-right: 1px solid var(--line);
+    padding: 14px 10px; transition: background var(--ease), border-color var(--ease);
+  }
+  html[data-skin="geocities"] .rail { border-right: 3px ridge #ffffff; }
+  .workspace { display: flex; align-items: center; gap: 8px; padding: 6px 8px 14px; font-size: 13px; font-weight: 700; }
+  .mark {
+    width: 18px; height: 18px; border-radius: var(--radius);
+    background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-size: 11px; font-weight: 700;
+    transition: background var(--ease), border-radius var(--ease), color var(--ease);
+  }
+  .nav-group { margin-bottom: 16px; }
+  .nav-label { padding: 0 8px 6px; font-size: 11px; color: var(--muted); }
+  .nav-item {
+    display: flex; align-items: center; gap: 9px; height: 28px; padding: 0 8px;
+    border-radius: var(--radius); color: var(--muted); font-size: 13px;
+    transition: background var(--ease), color var(--ease), border-radius var(--ease);
+  }
+  html[data-skin="geocities"] .nav-item { text-decoration: underline; color: #0000ee; }
+  html[data-skin="geocities"] .nav-item.active { background: #ffff00; color: #000000; }
+  .nav-item.active { background: var(--panel); color: var(--ink); }
+  .nav-glyph { width: 13px; text-align: center; opacity: .8; font-size: 12px; }
+
+  .stage { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .bar {
+    height: 48px; flex: 0 0 48px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; gap: 16px; transition: border-color var(--ease);
+  }
+  html[data-skin="geocities"] .bar { border-bottom: 3px ridge #ffffff; }
+  .crumb { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html[data-skin="geocities"] .crumb { color: #0000ee; text-decoration: underline; }
+  .controls { display: flex; align-items: center; gap: 10px; }
+  .state { font-size: 11px; color: var(--muted); letter-spacing: .02em; }
+  .state b { color: var(--ink); font-weight: 700; }
+
+  .style-button {
+    display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px;
+    border: 1px solid var(--accent); border-radius: var(--radius);
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 12px; font-weight: 700; letter-spacing: .01em; cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background var(--ease), color var(--ease), border-color var(--ease),
+                border-radius var(--ease), box-shadow var(--ease);
+  }
+  html[data-skin="geocities"] .style-button {
+    background: #c0c0c0; color: #000000; border: 3px outset #ffffff;
+    border-radius: 0; font-family: "Times New Roman", serif; font-size: 14px;
+    text-decoration: underline; box-shadow: none;
+  }
+  html[data-skin="web2k"] .style-button {
+    background: linear-gradient(#6cb6ff, #1a5fb4); border: 1px solid #175a9e;
+    border-radius: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 2px 4px rgba(0,0,0,.14);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+  }
+  html[data-skin="terminal"] .style-button {
+    border: 1px solid var(--accent); text-transform: lowercase;
+    text-shadow: 0 0 6px rgba(51,255,102,.7);
+  }
+  .style-button:hover { filter: brightness(1.08); }
+  .style-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .style-button .swap { font-size: 13px; line-height: 1; }
+
+  .doc { flex: 1; overflow: auto; padding: 40px 24px 88px; }
+  .page { max-width: 720px; margin: 0 auto; }
+  html[data-skin="geocities"] .page {
+    max-width: 560px; border: 3px ridge #ffffff; background: #ffffff;
+    padding: 18px 20px; text-align: center;
+  }
+  html[data-skin="geocities"] .page p,
+  html[data-skin="geocities"] .page li,
+  html[data-skin="geocities"] .page table { text-align: left; }
+  html[data-skin="web2k"] .page {
+    max-width: 680px; background: linear-gradient(#ffffff, #f4f8fd);
+    border: 1px solid #cbd7e4; border-radius: 18px; padding: 30px 34px;
+    box-shadow: 0 8px 24px rgba(26,95,180,.13); position: relative;
+  }
+  html[data-skin="web2k"] .page::before {
+    content: ""; position: absolute; left: 18px; right: 18px; top: 0; height: 3px;
+    border-radius: 0 0 3px 3px; background: linear-gradient(90deg, #7ec8ff, #1a5fb4, #7ec8ff);
+  }
+  html[data-skin="terminal"] .page p::before,
+  html[data-skin="terminal"] .foot::before { content: "> "; color: var(--muted); }
+
+  .eyebrow { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+  html[data-skin="geocities"] .eyebrow::before { content: "★ "; color: #ff00ff; }
+
+  .hero { margin: 0 0 24px; }
+  .hero span {
+    display: block; font-family: var(--hero-font); font-size: var(--hero-size);
+    font-weight: var(--hero-weight); letter-spacing: var(--hero-track); line-height: 1.04;
+    color: var(--hero-color);
+    transition: color var(--ease), font-size var(--ease), letter-spacing var(--ease);
+  }
+  html[data-skin="geocities"] .hero span:nth-child(1) { color: #ff00ff; text-decoration: underline; }
+  html[data-skin="geocities"] .hero span:nth-child(2) { color: #0000ee; text-decoration: underline; }
+  html[data-skin="geocities"] .hero span:nth-child(3) { color: #ff6600; text-decoration: underline; }
+  html[data-skin="web2k"] .hero span {
+    background: linear-gradient(#0b3d78 0%, #082c58 50%, #1a5fb4 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  html[data-skin="terminal"] .hero span { text-shadow: 0 0 14px rgba(51,255,102,.55); }
+
+  h1 { font-size: 20px; line-height: 1.3; font-weight: 650; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .updated { font-size: 12px; color: var(--muted); margin-bottom: 26px; }
+  p { margin: 0 0 16px; }
+
+  .callout {
+    border-left: 2px solid var(--accent); background: var(--soft);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 14px; margin: 24px 0; font-size: 14px;
+    transition: background var(--ease), border-color var(--ease), border-radius var(--ease);
+  }
+  html[data-skin="geocities"] .callout { border: 3px ridge #ffffff; background: #ffff00; color: #000000; }
+  .callout strong { font-weight: 700; }
+
+  h2 { font-size: 16px; line-height: 1.3; font-weight: 700; margin: 32px 0 10px; letter-spacing: -0.01em; }
+  .check { list-style: none; padding: 0; margin: 0 0 24px; }
+  .check li { display: flex; align-items: baseline; gap: 10px; padding: 5px 0; font-size: 14px; }
+  .tick {
+    width: 13px; height: 13px; flex: 0 0 13px;
+    border: 1px solid var(--accent); border-radius: calc(var(--radius) * .6);
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center; font-size: 9px; line-height: 1; transform: translateY(1px);
+    transition: background var(--ease), border-radius var(--ease);
+  }
+  html[data-skin="geocities"] .tick { border: 2px outset #ffffff; background: #c0c0c0; color: #000000; }
+
+  .quote {
+    margin: 28px 0; padding: 4px 0 4px 16px; border-left: 1px solid var(--line);
+    color: var(--muted); font-size: 15px; font-style: italic; transition: border-color var(--ease);
+  }
+  html[data-skin="geocities"] .quote { color: #0000ee; border-left: 3px ridge #ffffff; }
+
+  .table { width: 100%; border-collapse: collapse; margin: 8px 0 28px; font-size: 13px; }
+  .table th, .table td {
+    text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); transition: border-color var(--ease);
+  }
+  html[data-skin="geocities"] .table,
+  html[data-skin="geocities"] .table th,
+  html[data-skin="geocities"] .table td { border: 1px solid #0000ee; }
+  .table th { color: var(--muted); font-weight: 500; font-size: 11px; }
+  .table td:last-child { color: var(--muted); }
+  html[data-skin="geocities"] .table td:last-child { color: #000000; }
+
+  .foot {
+    margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--muted); transition: border-color var(--ease);
+  }
+
+  @media (max-width: 760px) {
+    .rail { display: none; }
+    .doc { padding: 28px 18px 64px; }
+    .hero span { font-size: 34px; }
+    h1 { font-size: 18px; }
+    .bar { padding: 0 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="workspace"><span class="mark">F</span> Fieldnotes</div>
+    <div class="nav-group">
+      <div class="nav-item"><span class="nav-glyph">⌕</span> Search</div>
+      <div class="nav-item"><span class="nav-glyph">◻</span> Inbox</div>
+      <div class="nav-item"><span class="nav-glyph">◷</span> Today</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-label">Private</div>
+      <div class="nav-item active"><span class="nav-glyph">▤</span> Design tokens</div>
+      <div class="nav-item"><span class="nav-glyph">▤</span> Skin lab</div>
+      <div class="nav-item"><span class="nav-glyph">▤</span> Reading list</div>
+    </div>
+  </aside>
+
+  <div class="stage">
+    <header class="bar">
+      <div class="crumb">Private / Design tokens, one state away</div>
+      <div class="controls">
+        <span class="state">skin <b id="skin-name">notion</b></span>
+        <button class="style-button" id="style-button" type="button" aria-label="Switch style">
+          <span class="swap" aria-hidden="true">⇄</span> Switch style
+        </button>
+      </div>
+    </header>
+
+    <main class="doc">
+      <article class="page">
+        <div class="eyebrow">Fieldnotes / Experiment 04</div>
+        <h1 class="hero"><span>REMIX</span><span>RE-THINK</span><span>RE:IMAGINE</span></h1>
+        <h1>Design tokens, one state away</h1>
+        <div class="updated">Updated today</div>
+
+        <p>Everything on this page is drawn from one value. Change the value and the page changes with it — the sidebar, the type, the spacing, the corners, the button that did it.</p>
+
+        <div class="callout"><strong>One state decides every surface.</strong> The content never moves. Only the system around it does.</div>
+
+        <h2>What changes</h2>
+        <ul class="check">
+          <li><span class="tick">✓</span> Color and contrast</li>
+          <li><span class="tick">✓</span> Type family and scale</li>
+          <li><span class="tick">✓</span> Spacing and density</li>
+          <li><span class="tick">✓</span> Radius and shadow</li>
+          <li><span class="tick">✓</span> Motion timing</li>
+        </ul>
+
+        <div class="quote">The interface is a pure function of one value.</div>
+
+        <h2>Live tokens</h2>
+        <table class="table">
+          <thead><tr><th>Token</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>skin</td><td id="tok-skin">notion</td></tr>
+            <tr><td>type</td><td id="tok-font">system sans</td></tr>
+            <tr><td>density</td><td id="tok-pad">16px</td></tr>
+            <tr><td>radius</td><td id="tok-radius">3px</td></tr>
+          </tbody>
+        </table>
+
+        <div class="foot">Four eras, one document, no duplicated markup</div>
+      </article>
+    </main>
+  </div>
+</div>
+
+<div class="phase" id="phase" aria-hidden="true">
+  <div class="phase-word">
+    <span id="beat-1">REMIX</span>
+    <span id="beat-2">RE-THINK</span>
+    <span id="beat-3">RE:IMAGINE</span>
+  </div>
+</div>
+
+<script>
+  var skins = [
+    { id: "notion",    label: "notion",    font: "system sans", pad: "16px", radius: "3px" },
+    { id: "geocities", label: "geocities", font: "times",       pad: "7px",  radius: "0px" },
+    { id: "web2k",     label: "web2k",     font: "verdana",     pad: "14px", radius: "12px" },
+    { id: "terminal",  label: "terminal",  font: "monospace",   pad: "6px",  radius: "0px" }
+  ];
+  var index = 0;
+  var busy = false;
+  var button = document.getElementById("style-button");
+  var root = document.documentElement;
+  var phase = document.getElementById("phase");
+  var beats = [
+    document.getElementById("beat-1"),
+    document.getElementById("beat-2"),
+    document.getElementById("beat-3")
+  ];
+  var readouts = [
+    document.getElementById("tok-skin"),
+    document.getElementById("tok-font"),
+    document.getElementById("tok-pad"),
+    document.getElementById("tok-radius")
+  ];
+  var pads = ["4px", "7px", "10px", "14px", "16px", "22px"];
+  var radii = ["0px", "2px", "3px", "6px", "12px", "18px"];
+  var fonts = ["system sans", "times", "verdana", "monospace", "old-style"];
+
+  function writeReadout(skin) {
+    readouts[0].textContent = skin.id;
+    readouts[1].textContent = skin.font;
+    readouts[2].textContent = skin.pad;
+    readouts[3].textContent = skin.radius;
+  }
+
+  function resetBeats() {
+    beats.forEach(function (b) { b.classList.remove("beat"); });
+    void phase.offsetWidth;
+  }
+
+  button.addEventListener("click", function () {
+    if (busy) return;
+    busy = true;
+    var next = (index + 1) % skins.length;
+    var scramble = setInterval(function () {
+      readouts[1].textContent = fonts[Math.floor(Math.random() * fonts.length)];
+      readouts[2].textContent = pads[Math.floor(Math.random() * pads.length)];
+      readouts[3].textContent = radii[Math.floor(Math.random() * radii.length)];
+    }, 45);
+
+    resetBeats();
+    phase.classList.add("on");
+    root.classList.add("swap-out");
+    beats[0].classList.add("beat");
+
+    setTimeout(function () { beats[1].classList.add("beat"); }, 150);
+
+    setTimeout(function () {
+      index = next;
+      var skin = skins[index];
+      root.setAttribute("data-skin", skin.id);
+      document.getElementById("skin-name").textContent = skin.label;
+      button.setAttribute("aria-label", "Switch style, current " + skin.label);
+      clearInterval(scramble);
+      writeReadout(skin);
+      root.classList.remove("swap-out");
+      root.classList.add("swap-in");
+      beats[2].classList.add("beat");
+    }, 300);
+
+    setTimeout(function () {
+      root.classList.remove("swap-in");
+      phase.classList.remove("on");
+      busy = false;
+    }, 560);
+  });
+</script>
+</body>
+</html>
