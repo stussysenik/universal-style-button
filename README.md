@@ -1,42 +1,33 @@
 # Universal Style Button
 
-One document. One switch. Twenty eras of interface style, from Swiss Grid (1957) to Bento (2024), driven by one shared engine on web and native.
+Twenty interface eras sit behind one selection object.
 
-The switch never swaps markup. It changes one `Selection`, and every surface reads from it — including the button that did it.
+**Reviewed 2026-11-27** · 2026-11-25 → 2026-11-25 · 5 commits
+
+- **What it is** — Web and Expo showcase driven by a platform-agnostic TypeScript engine.
+- **Focus** — Switch interface style without swapping markup or duplicating token tables.
+- **Learning outcome** — Explore twenty eras, freeze individual axes and see the ranked next choice.
+- **Innovation** — A weighted contrast score picks the next skin; switching an axis off freezes that slice at its current value.
+- **Build** — one-day build, 5 commits
+
+## Screenshots / evidence
+
+![Bento era on the web](docs/mocks/2026-11-25-universal-style-button/shot-web-bento.png)
+Captured web mock; native renders the same engine through Metro.
 
 ## Run
 
-| Command | Surface |
-|---|---|
-| `npm run dev:web` | Web showcase at `http://localhost:4173` |
-| `npm run dev:ios` | Expo Go on iOS |
-| `npm run dev:android` | Expo Go on Android |
-| `npm run check` | Strict typecheck, engine tests, web token emit |
-| `npm test` | Engine invariants |
-| `npm run gen:web` | Re-emit `web/engine/` from `src/engine/` |
+```sh
+npm run dev:web
+npm run dev:ios
+npm run dev:android
+npm run check
+npm test
+npm run gen:web
+```
 
-Public web build: `https://stussysenik.github.io/universal-style-button/`
+## Details
 
-## How it works
-
-`src/engine/` is platform-agnostic TypeScript:
-
-- `skins.ts` — 20 authored eras, each a complete token set
-- `algorithm.ts` — weighted contrast distance between eras; the next skin is the highest-ranked candidate, not a fixed cycle
-- `selection.ts` — `{ base, enabled, frozen }`; switching off an axis freezes that slice at its current value
-- `types.ts` — eight axes: color, type, space, radius, motion, shadow, structure, cursor
-
-Web consumes `web/engine/`, emitted from the same source by `npm run gen:web`. Native imports `src/engine/` directly through Metro. No duplicated token tables.
-
-Settings gate which axes follow the switch. The ranked algorithm panel shows the score and the axis that led the choice, so the path is visible rather than a black box.
-
-## Platform notes
-
-- Cursors are a web-only axis. Native has no cursor, so the setting is omitted and the resolved glyph is shown as a swatch.
-- Native maps semantic font keys to platform families in `src/native/fonts.ts`; web maps the same keys to CSS stacks.
-- Native texture is a glyph strip rather than a fake CSS background.
-- Reduced motion is respected on web.
-
-## Record
-
-Decisions, rejected paths and verification live in `JOURNAL.md`. Mock screenshots and the design answer live in `docs/mocks/2026-11-25-universal-style-button/`.
+- Eight axes: color, type, space, radius, motion, shadow, structure, cursor.
+- Cursor is web-only; native shows the resolved glyph as a swatch instead.
+- Web consumes `web/engine/`, emitted from `src/engine/` by `npm run gen:web`.

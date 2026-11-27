@@ -108,3 +108,8 @@ and Pages deploy all passed. Public smoke test:
 `https://stussysenik.github.io/universal-style-button/` returns HTTP 200 with
 `<title>Universal Style Button</title>`, and `/engine/skins.js` returns HTTP 200.
 Node 20 runner deprecation annotations are upstream action notices, not failures.
+
+## 2026-11-27 — portfolio README
+
+- Rewrote `README.md` as a portfolio showcase; working run commands preserved from the prior file.
+- Evidence: `docs/mocks/2026-11-25-universal-style-button/shot-web-bento.png` is a committed capture; commands read from `package.json` and the existing `JOURNAL.md`.
